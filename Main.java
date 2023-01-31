@@ -19,6 +19,8 @@ class Player {
         if (in.hasNextLine()) {
             in.nextLine();
         }
+
+        //TODO change to fill 2D array for BOARD object
         for (int i = 0; i < height; i++) {
             String row = in.nextLine(); // one line of the grid: space " " is floor, pound "#" is wall
         }
@@ -42,9 +44,13 @@ class Player {
             }
             int visiblePelletCount = in.nextInt(); // all pellets in sight
 
+
+            //TODO change to fill board state(x and y to array indicies)
             for (int i = 0; i < visiblePelletCount; i++) {
                 int x = in.nextInt();
                 int y = in.nextInt();
+
+                //TODO move and change to be in defaultMove in Pac class
                 if(i == 0)
                     coords1 = "MOVE 1 " + x + " " + y;
                 if(myPacs == 3){
@@ -70,8 +76,96 @@ class Player {
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
 
-            
+            //pacObj.getMove() + " | " + etc...
             System.out.println(coords0 + " | " + coords1 + " | " + coords2 + " | " + coords3 + " | " + coords4); // MOVE <pacId> <x> <y>
         }
+    }
+
+    
+
+}
+
+/*
+ * intakes: coordinates of the pac(only for ally pacs)
+ * will use enemy pac coordinates for enemyDetect, from main method
+ */
+class Pac {
+
+    // "MOVE " + id
+    String id;
+    // id + x + y
+    String move;
+
+    int x;
+    int y;
+
+    public Pac(int x, int y) {
+        this.x = x; 
+        this.y = y;
+    }
+
+    public String getMove() {
+        return move;
+    }
+    
+    /*
+     * prioritize big pellets(search board for biggest value and closeness?)
+     * if visiblePellet > 0, go to pellet
+     * else, refer to board object
+     */
+    public String defaultMove(Board board) {
+
+        String[][] temp = board.getBoard();
+        int bx;
+        int by;
+        int distance = 10000;
+
+        //search for closest big pellet
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp[i].length; j++) {
+                if (temp[i][j] == "10" && distance > i + j) {
+                    bx = i;
+                    by = j;
+                    distance = bx + by;
+                }
+            }
+        }
+
+        //TODO
+        return "";
+    }
+
+    /* 
+     * check in 5x5 square around current pac to see if there are enemy pacs
+     * intakes board state
+     * look to see if mine variable returns false
+     */
+    public void enemyDetect() {
+        //TODO
+    }
+
+    /*
+     * decides action taken when encountering enemy pacman
+     * if this pac is hunter, change to correct shape and chase enemy pac
+     * if pac is collector, avoid enemy pac
+     */
+    public void enemyEncounter() {
+        //TODO
+    }
+}
+
+class Board {
+    String[][] board;
+    public Board(String[][] board) {
+        this.board = board;
+    }
+
+    public String[][] getBoard() {
+        return board;
+    }
+
+    //update board based on pac vision?
+    public void updateBoard() {
+
     }
 }
